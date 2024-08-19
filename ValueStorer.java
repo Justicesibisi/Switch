@@ -1,47 +1,49 @@
 import java.util.Scanner;
 
 public class ValueStorer {  
-    private static final int NUM_VALUES = 3;  
-    private static byte[] byteValues = new byte[NUM_VALUES];  
-    private static short[] shortValues = new short[NUM_VALUES];  
+    
+    static int NUM_VALUES = 3;  
+    
+   static  byte[] byteValues = new byte[NUM_VALUES];  
+   static  short[] shortValues = new short[NUM_VALUES];  
   
     public static void main(String[] args) {  
         Scanner scanner = new Scanner(System.in);  
   
-        for (int i = 0; i < NUM_VALUES; i++) {  
-            int intValue = getValueFromUser(i + 1, scanner);  
-            storeValue(intValue, i, scanner);  
+        for (int i = 0; i < 3; i++) {  // Loop to ask the user for 3 values
+            System.out.println("Enter a value (" + (i + 1) + "/3): ");  
+            int intValue = scanner.nextInt();  
+            
+            String range = getRange(intValue);  
+            switch (range) {  
+                case "byte":  
+                    
+                    byteValues[i] = (byte) intValue;  
+                    System.out.println("Value " + intValue + " stored in byte array.");  
+                    break;  
+                case "short":  
+                   
+                    shortValues[i] = (short) intValue;  
+                    System.out.println("Value " + intValue + " stored in short array.");  
+                    break;  
+                default:  
+                    
+                    System.out.println("Out of range.");  
+                    break;  
+            }  
         }  
   
         scanner.close();  
     }  
   
-    private static int getValueFromUser(int index, Scanner scanner) {  
-        System.out.println("Enter a value (" + index + "/" + NUM_VALUES + "): ");  
-        return scanner.nextInt();  
-    }  
-  
-    private static void storeValue(int intValue, int index, Scanner scanner) {  
-        String range = getRange(intValue);  
-        switch (range) {  
-            case "BYTE":  
-                byteValues[index] = (byte) intValue;  
-                System.out.println("Value " + intValue + " stored in byte array.");  
-                break;  
-            case "SHORT":  
-                shortValues[index] = (short) intValue;  
-                System.out.println("Value " + intValue + " stored in short array.");  
-                break;  
-            default:  
-                System.out.println("Out of range. Please re-enter the value.");  
-                storeValue(getValueFromUser(index + 1, scanner), index, scanner);  
-                break;  
-        }  
-    }  
-  
+   
     private static String getRange(int value) {  
-        return (value >= Byte.MIN_VALUE && value <= Byte.MAX_VALUE) ? "BYTE" : 
-               (value >= Short.MIN_VALUE && value <= Short.MAX_VALUE) ? "SHORT" : 
-               "OUT_OF_RANGE";
+        if (value >= -128 && value <= 127) {
+            return "BYTE";
+        } else if (value >= -32768 && value <= 32767) {
+            return "SHORT";
+        } else {
+            return "OUT_OF_RANGE";
+        }
     }  
 }
